@@ -27,6 +27,9 @@ Y_base = Y;
 % added to the freestream condition to simulate it
 extra = zeros(N,1);
 
+% Index of the separation point on the top, bottom, and overall
+I_crit = zeros(3,1);
+
 % Get the midpoints and normals from the geometry
 [X_mid,Y_mid,norms,~,node_norms] = geo_decomp(X,Y);
 
@@ -179,6 +182,7 @@ for k = 1:it
     end
     % Separation point index in terms of top nodes array
     I_crit(1) = find(Y_top_node==y_crit_top,1);
+    I_crit(3) = I_crit(1) + I;
     
     % Approximate the separated flow
     slope = (delta_d_star(I_crit(1))-delta_d_star(I_crit(1)-1))/(pos(I_crit(1))-pos(I_crit(1)-1));
