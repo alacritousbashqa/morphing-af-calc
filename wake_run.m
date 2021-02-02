@@ -33,6 +33,22 @@ fprintf("Alpha:      %0.2f deg\n", alpha)
 % Run a viscous panel method at this AoA
 [~,~,I_crit] = Thwaites_panel_1(X,Y,Vinf,alpha,mu,rho,1,false,false);
 
+% I_sp = I_crit(3);
+I_sp = 3*N/4;
+[~,strengths] = inv_wake(X,Y,Vinf,alpha,zeros(N,1),I_sp);
+
+[spWake,teWake] = constructWake([X(I_sp);Y(I_sp)],[X(1);Y(1)],X,Y,strengths,Vinf,alpha);
+
+figure
+plot(X,Y,'k.-')
+hold on
+plot(spWake(:,1),spWake(:,2),'b.-')
+plot(teWake(:,1),teWake(:,2),'b.-')
+hold off
+pbaspect([3.1 2 1])
+ylim([-1 1])
+xlim([-0.1 3])
+
 % Report chord Reynolds number
 fprintf("Reynolds Number: %0.0f\n", Re)
 
