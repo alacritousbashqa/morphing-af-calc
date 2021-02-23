@@ -28,7 +28,7 @@ nu = mu/rho;                    % Kinematic Viscosity [m^2/s]
 Vinf = 100;                     % Freestream velocity [m/s]
 Re = rho*Vinf*c/mu;             % Chord Reynolds Number
 
-alpha = 15;      % Angle of attack [deg]
+alpha = 25;      % Angle of attack [deg]
 fprintf("Alpha:      %0.2f deg\n", alpha)
 
 % Run a viscous panel method at this AoA
