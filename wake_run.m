@@ -144,6 +144,25 @@ A(N,I) = 1;
 b(I) = 0;
 b(M) = 0;
 
+%% Solve linear system for strengths
+strengths = A\b;
+
+%% Get Cp and tangential velocities
+
+Cp = zeros(N,1);
+vtan = zeros(N,1);
+for i=1:N
+    for j=1:M
+        vtan(i) = vtan(i) + B(i,j)*strengths(j);
+    end
+    vtan(i) = vtan(i) + dot(Qinf,tans(i,:));
+    Cp(i) = 1-(vtan(i)/Vinf)^2;
+end
+
+end
+
+
+
 function [Cp,strengths,X_mid,Y_mid,norms,tans] = inv_wake_sol(X,Y,Vinf,alpha,extra,I,Nw,spWake,teWake)
 
 M = length(X);          % Number of points
