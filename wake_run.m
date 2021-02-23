@@ -4,6 +4,7 @@ close all
 clc
 
 N = 200;                % Number of panels
+Nw = 500;               % Number of wake panels
 foil = '0012';          % Airfoil four digit NACA number
 
 N = N - mod(N,2);       % Ensures that the number of panels is even

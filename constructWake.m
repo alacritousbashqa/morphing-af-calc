@@ -1,6 +1,6 @@
-function [spWake,teWake] = constructWake(SP,TE,X,Y,strengths,Vinf,alpha)
+function [spWake,teWake] = constructWake(SP,TE,X,Y,strengths,Vinf,alpha,Nw)
 
-N = 500;                % Number of wake panels
+N = Nw;                % Number of wake panels
 spWake = zeros(N,2);    % Wake from the separation point
 teWake = spWake;        % Wake from the trailing edge
 
