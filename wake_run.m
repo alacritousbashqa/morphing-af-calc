@@ -31,14 +31,23 @@ Re = rho*Vinf*c/mu;             % Chord Reynolds Number
 alpha = 25;      % Angle of attack [deg]
 fprintf("Alpha:      %0.2f deg\n", alpha)
 
+[X_mid,Y_mid] = geo_decomp(X,Y);
+
 % Run a viscous panel method at this AoA
 [~,~,I_crit] = Thwaites_panel_1(X,Y,Vinf,alpha,mu,rho,1,false,false);
 
 % I_sp = I_crit(3);
 I_sp = 3*N/4;
-[~,strengths] = inv_wake(X,Y,Vinf,alpha,zeros(N,1),I_sp);
+[Cp,strengths] = inv_wake(X,Y,Vinf,alpha,zeros(N,1),I_sp);
 
-[spWake,teWake] = constructWake([X(I_sp);Y(I_sp)],[X(1);Y(1)],X,Y,strengths,Vinf,alpha);
+[spWake,teWake] = constructWake([X(I_sp);Y(I_sp)],[X(1);Y(1)],X,Y,strengths,Vinf,alpha,Nw);
+
+delX = (-X_mid(I_sp-1)+X(I_sp))/2;
+delY = (-Y_mid(I_sp-1)+Y(I_sp))/2;
+
+spWake(:,1) = spWake(:,1) - delX.*ones(length(spWake(:,1)),1);
+spWake(:,2) = spWake(:,2) - delY.*ones(length(spWake(:,2)),1);
+
 
 figure
 plot(X,Y,'k.-')
