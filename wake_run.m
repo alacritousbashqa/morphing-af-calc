@@ -60,6 +60,11 @@ pbaspect([3.1 2 1])
 ylim([-1 1])
 xlim([-0.1 3])
 
+figure
+plot(X_mid,Cp)
+set(gca,'YDir','reverse')
+grid on
+
 % Report chord Reynolds number
 fprintf("Reynolds Number: %0.0f\n", Re)
 
