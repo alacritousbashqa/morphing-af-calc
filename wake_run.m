@@ -31,6 +31,7 @@ Re = rho*Vinf*c/mu;             % Chord Reynolds Number
 alpha = 25;      % Angle of attack [deg]
 fprintf("Alpha:      %0.2f deg\n", alpha)
 
+%%
 [X_mid,Y_mid] = geo_decomp(X,Y);
 
 % Run a viscous panel method at this AoA
@@ -55,11 +56,31 @@ plot(X,Y,'k.-')
 hold on
 plot(spWake(:,1),spWake(:,2),'b.-')
 plot(teWake(:,1),teWake(:,2),'b.-')
-hold off
 pbaspect([3.1 2 1])
 ylim([-1 1])
 xlim([-0.1 3])
 
+%%
+for iter = 1:20
+[spWake,teWake] = constructWake([X(I_sp);Y(I_sp)],[X(1);Y(1)],X,Y,strengths,Vinf,alpha,Nw);
+
+delX = (-X_mid(I_sp-1)+X(I_sp))/2;
+delY = (-Y_mid(I_sp-1)+Y(I_sp))/2;
+
+spWake(:,1) = spWake(:,1) - delX.*ones(length(spWake(:,1)),1);
+spWake(:,2) = spWake(:,2) - delY.*ones(length(spWake(:,2)),1);
+
+[Cp,strengths,X_mid,Y_mid,norms,tans] = inv_wake_sol(X,Y,Vinf,alpha,zeros(N,1),I_sp,Nw,spWake,teWake);
+end
+
+plot(spWake(:,1),spWake(:,2),'r.-')
+plot(teWake(:,1),teWake(:,2),'r.-')
+pbaspect([3.1 2 1])
+ylim([-1 1])
+xlim([-0.1 3])
+hold off
+
+%%
 figure
 plot(X_mid,Cp)
 set(gca,'YDir','reverse')
