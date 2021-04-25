@@ -1,13 +1,17 @@
-function [streamline] = generateStreamline(start,X,Y,strengths,Vinf,alpha,Nw)
+function [streamline] = generateStreamline(start,bCosine,pLength,X,Y,strengths,Vinf,alpha,Nw)
 %% Creates a streamline (matrix of points) from a starting point based on the velocity induced by the airfoil vortices and the freestream
 
 N = Nw;                     % Number of wake panels
 streamline = zeros(N,2);    % Wake from the separation point
 
-% Panel lengths increase based on cosine distribution
-t = linspace(0,pi,N);
-initialPanelLength = 2e-5;  % Length of first wake panel
-L = initialPanelLength + 0.05*(1 - cos(t));
+if bCosine
+    % Panel lengths increase based on cosine distribution
+    t = linspace(0,pi,N);
+    L = pLength + 0.05*(1 - cos(t));
+else
+    % Panel lengths remain constant
+    L = pLength.*ones(N,1);
+end
 
 streamline(1,:) = [start(1) start(2)];   % Set the first wake point at the separation point
 
