@@ -1,23 +1,22 @@
 function [streamline] = generateStreamline(start,bCosine,pLength,X,Y,strengths,Vinf,alpha,Nw)
 %% Creates a streamline (matrix of points) from a starting point based on the velocity induced by the airfoil vortices and the freestream
 
-N = Nw;                     % Number of wake panels
-streamline = zeros(N,2);    % Wake from the separation point
+streamline = zeros(Nw,2);    % Wake from the separation point
 
 if bCosine
     % Panel lengths increase based on cosine distribution
-    t = linspace(0,pi,N);
+    t = linspace(0,pi,Nw);
     L = pLength + 0.05*(1 - cos(t));
 else
     % Panel lengths remain constant
-    L = pLength.*ones(N,1);
+    L = pLength.*ones(Nw,1);
 end
 
 streamline(1,:) = [start(1) start(2)];   % Set the first wake point at the separation point
 
 % The panels should follow the streamlines of the air flow
 dir_new = 0;
-for i = 1:N-1
+for i = 1:Nw-1
     dist = L(i)/2;    % Collocation point distance from previous wake node
     coll = [streamline(i,1)+dist*cos(dir_new) streamline(i,2)+dist*sin(dir_new)];   % Collocation point (AKA panel center)
     dir_old = atan2(coll(2)-streamline(i,2),coll(1)-streamline(i,1));   % Initial panel angle
