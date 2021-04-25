@@ -27,6 +27,8 @@ for i = 1:Nw-1
         if abs(dir_new-dir_old) <= 1e-4
             streamline(i+1,:) = [streamline(i,1)+dist*cos(dir_new) streamline(i,2)+dist*sin(dir_new)];
             break
+        elseif j == 100
+            streamline(i+1,:) = [streamline(i,1)+dist*cos(dir_old) streamline(i,2)+dist*sin(dir_old)];
         else
             coll = [streamline(i,1)+dist*cos(dir_new) streamline(i,2)+dist*sin(dir_new)];
             dir_old = atan2(coll(2)-streamline(i,2),coll(1)-streamline(i,1));
